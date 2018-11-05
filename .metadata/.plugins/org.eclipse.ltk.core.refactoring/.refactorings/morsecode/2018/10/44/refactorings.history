@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;morsecode/drivers/led&apos; to &apos;led.c&apos;" description="Rename resource &apos;led&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="drivers/led" name="led.c" stamp="1540977630413" updateReferences="true"/>
+</session>
