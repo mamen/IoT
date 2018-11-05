@@ -8,8 +8,12 @@
 #ifndef DRIVERS_LED_H_
 #define DRIVERS_LED_H_
 
-#define LED_RED (1<<0)
-#define LED_GREEN (1<<7)
+#define LED_RED 1
+#define LED_GREEN 2
+
+#define LED_PIN_RED (1<<0)
+#define LED_PIN_GREEN (1<<7)
+
 #define LED_MODE_OFF 0
 #define LED_MODE_ON 1
 #define LED_MODE_TOGGLE 2
