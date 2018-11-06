@@ -10,6 +10,7 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
+"./src/drivers/buttons.obj" \
 "./src/drivers/led.obj" \
 "./src/hal/gpio.obj" \
 "./src/main.obj" \
@@ -164,8 +165,8 @@ morsecode.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "src\drivers\led.obj" "src\hal\gpio.obj" "src\main.obj" 
-	-$(RM) "src\drivers\led.d" "src\hal\gpio.d" "src\main.d" 
+	-$(RM) "src\drivers\buttons.obj" "src\drivers\led.obj" "src\hal\gpio.obj" "src\main.obj" 
+	-$(RM) "src\drivers\buttons.d" "src\drivers\led.d" "src\hal\gpio.d" "src\main.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

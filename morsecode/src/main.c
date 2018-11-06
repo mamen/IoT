@@ -9,11 +9,15 @@
 
 
 static volatile int pressCounter = 0;
-static volatile int ditDuration = 60;
-static volatile int dahDuration = 180;
-static volatile int percentageOff = 50;
+static volatile float ditDuration = 60.0;
+static volatile float dahDuration = 180.0;
+static volatile float percentageOff = 50.0;
 static volatile char sequence[100];
 static volatile int signCount = 0;
+
+
+static volatile int ledCountRed = 0;
+static volatile int ledCountGreen = 0;
 
 
 static volatile int test = 0;
@@ -21,17 +25,23 @@ static volatile int test = 0;
 #pragma vector = TIMER0_A0_VECTOR
 __interrupt void TimerA0_ISR (void) {
 
-//    if(test < 10) {
-//        // off
-//        led_toggleLED(LED_RED, LED_MODE_OFF);
-//        led_toggleLED(LED_GREEN, LED_MODE_OFF);
-//        test++;
-//    } else {
-//        // on
-//        led_toggleLED(LED_RED, LED_MODE_ON);
-//        led_toggleLED(2, LED_MODE_ON);
-//        test = 0;
-//    }
+    if(led_getCurrentMode(LED_GREEN) == LED_MODE_ON) {
+        ledCountGreen++;
+
+        if(ledCountGreen > 10) {
+           led_toggleLED(LED_GREEN, LED_MODE_OFF);
+           ledCountGreen = 0;
+        }
+    }
+
+    if(led_getCurrentMode(LED_RED) == LED_MODE_ON) {
+        ledCountRed++;
+
+        if(ledCountRed > 10) {
+           led_toggleLED(LED_RED, LED_MODE_OFF);
+           ledCountRed = 0;
+        }
+    }
 
     // if any button is pressed
     if(
@@ -49,10 +59,13 @@ __interrupt void TimerA0_ISR (void) {
             // - = dah = 180ms
 
 
+            float x = (float)(ditDuration * (1 - (percentageOff/100)));
+            float y = (float)(ditDuration * (1 + (percentageOff/100)));
+
             // dit or dah?
             if(
-                    pressCounter >= (ditDuration * (1 - (percentageOff/100))) &&
-                    pressCounter <= (ditDuration * (1 + (percentageOff/100)))
+                    (float)pressCounter >= x &&
+                    (float)pressCounter <= y
                 ) {
                     // dit
 
@@ -60,8 +73,8 @@ __interrupt void TimerA0_ISR (void) {
                     signCount++;
                     led_toggleLED(LED_GREEN, LED_MODE_ON);
             } else if(
-                    pressCounter >= (dahDuration * (1 - (percentageOff/100))) &&
-                    pressCounter <= (dahDuration * (1 + (percentageOff/100)))
+                    (float)pressCounter >= (float)(dahDuration * (1 - (float)(percentageOff/100))) &&
+                    (float)pressCounter <= (float)(dahDuration * (1 + (float)(percentageOff/100)))
                 ) {
                     // dah
 
@@ -93,10 +106,6 @@ int main(void)
 
     P1OUT = 0x06;
 
-//    led_toggleLED(LED_RED, LED_MODE_ON);
-//    led_toggleLED(LED_GREEN, LED_MODE_ON);
-
-
 
     // Timer --------------------------
     TA0CCR0 = 10000; // 1 ms @ 1MHz
@@ -107,8 +116,8 @@ int main(void)
     _enable_interrupt();
     // --------------------------------
 
-    while (1) {
-    }
+    led_toggleLED(LED_RED, LED_MODE_OFF);
+    while (1);
 
     return 0;
 }

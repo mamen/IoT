@@ -15,9 +15,6 @@ __interrupt void TimerA1_ISR (void) {
     TA1CCTL1 &= ~CCIFG;
 }
 
-
-
-
 void led_init() {
 
     // timer
@@ -71,3 +68,16 @@ void led_toggleLED(int ledNum, int mode) {
 
     }
 }
+
+int led_getCurrentMode(int ledNum) {
+    if(ledNum == LED_RED) {
+        volatile int x = P1OUT & 0x01;
+        return P1OUT & 0x01;
+    }
+
+    if(ledNum == LED_GREEN) {
+        volatile int x = (P1OUT >> 7) & 0x01;
+        return (P1OUT >> 7) & 0x01;
+    }
+}
+

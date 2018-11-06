@@ -21,5 +21,6 @@
 
 void led_init();
 void led_toggleLED(int ledNum, int mode);
+int led_getCurrentMode(int ledNum);
 
 #endif /* DRIVERS_LED_H_ */
