@@ -2,34 +2,34 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="TA1" key="selection"/>
+		<item value="clear" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="Clear"/>
+			<item value="clear"/>
+			<item value="Timer A mode control"/>
+			<item value="MC_1"/>
+			<item value="output mode"/>
+			<item value="ID_0"/>
+			<item value="Timer1_A"/>
+			<item value="vector"/>
+			<item value="TACLR"/>
+			<item value="TASSEL_2"/>
+			<item value="ID_3"/>
+			<item value="msp430fr6989"/>
 			<item value="TA1"/>
 			<item value="TA0"/>
 			<item value="TA1CCR0"/>
-			<item value="TA0CCR0"/>
-			<item value="TIMERA0_"/>
-			<item value="TIMERA0_VECTOR"/>
-			<item value="vector"/>
-			<item value="Timer0"/>
-			<item value="T0A0"/>
-			<item value="msp430fr6989"/>
-			<item value="msp430ft6989"/>
-			<item value="VECTOR"/>
-			<item value="TA0CTL"/>
-			<item value="TA0CCR"/>
-			<item value="P9SEL"/>
 		</list>
 		<list key="replacehistory">
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="284" key="DIALOG_WIDTH"/>
-		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|5|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<item value="391" key="DIALOG_HEIGHT"/>
 		<item value="1091" key="DIALOG_X_ORIGIN"/>
 		<item value="108" key="DIALOG_Y_ORIGIN"/>

@@ -7,5 +7,5 @@ org.eclipse.launchbar.core.descriptorType.default\:blinky/activeLaunchMode=run
 org.eclipse.launchbar.core.descriptorType.default\:blinky/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local
 org.eclipse.launchbar.core.descriptorType.default\:buttonToLED/activeLaunchMode=run
 org.eclipse.launchbar.core.descriptorType.default\:ledDimmer/activeLaunchMode=run
-org.eclipse.launchbar.core.descriptorType.default\:morsecode/activeLaunchMode=run
+org.eclipse.launchbar.core.descriptorType.default\:morsecode/activeLaunchMode=debug
 org.eclipse.launchbar.core.descriptorType.default\:ticksSinceStart/activeLaunchMode=run

@@ -1,56 +1,29 @@
 #include <msp430.h>
 #include "drivers/led.h"
 #include "drivers/buttons.h"
+#include "main.h"
 
 
-/**
- * main.c
- */
+static volatile State currentState;
 
 
-static volatile int pressCounter = 0;
-static volatile float ditDuration = 60.0;
-static volatile float dahDuration = 180.0;
-static volatile float percentageOff = 50.0;
-static volatile char sequence[100];
-static volatile int signCount = 0;
-
-
-static volatile int ledCountRed = 0;
-static volatile int ledCountGreen = 0;
-
-
-static volatile int test = 0;
-
-#pragma vector = TIMER0_A0_VECTOR
-__interrupt void TimerA0_ISR (void) {
-
-    if(led_getCurrentMode(LED_GREEN) == LED_MODE_ON) {
-        ledCountGreen++;
-
-        if(ledCountGreen > 10) {
-           led_toggleLED(LED_GREEN, LED_MODE_OFF);
-           ledCountGreen = 0;
-        }
-    }
-
-    if(led_getCurrentMode(LED_RED) == LED_MODE_ON) {
-        ledCountRed++;
-
-        if(ledCountRed > 10) {
-           led_toggleLED(LED_RED, LED_MODE_OFF);
-           ledCountRed = 0;
-        }
-    }
+void handleInput() {
 
     // if any button is pressed
-    if(
-            buttons_isButtonPressed(BUTTON_1) ||
-            buttons_isButtonPressed(BUTTON_2)
-    ) {
+    if(buttons_isButtonPressed(BUTTON_1) ||
+       buttons_isButtonPressed(BUTTON_2)) {
+
+        // light up red LED while button is pressed
+        if(led_getCurrentMode(LED_RED) == LED_MODE_OFF) {
+            led_toggleLED(LED_RED, LED_MODE_ON);
+        }
+
         // increment the counter
         pressCounter++;
     } else {
+
+        // switch off the LED
+        led_toggleLED(LED_RED, LED_MODE_OFF);
 
         // if the counter is > 0 and no button is pressed:
         // ==> button got released
@@ -58,32 +31,31 @@ __interrupt void TimerA0_ISR (void) {
             // . = dit = 60ms
             // - = dah = 180ms
 
-
-            float x = (float)(ditDuration * (1 - (percentageOff/100)));
-            float y = (float)(ditDuration * (1 + (percentageOff/100)));
+            float minValue = (float)(ditDuration * (1 - (percentageOff/100)));
+            float maxValue = (float)(ditDuration * (1 + (percentageOff/100)));
 
             // dit or dah?
-            if(
-                    (float)pressCounter >= x &&
-                    (float)pressCounter <= y
-                ) {
+            if((float)pressCounter >= minValue &&
+               (float)pressCounter <= maxValue) {
                     // dit
 
                     sequence[signCount] = '.';
                     signCount++;
-                    led_toggleLED(LED_GREEN, LED_MODE_ON);
-            } else if(
-                    (float)pressCounter >= (float)(dahDuration * (1 - (float)(percentageOff/100))) &&
-                    (float)pressCounter <= (float)(dahDuration * (1 + (float)(percentageOff/100)))
-                ) {
+                    led_glowForMs(LED_GREEN, 500);
+
+            } else if((float)pressCounter >= minValue &&
+                      (float)pressCounter <= maxValue) {
                     // dah
 
                     sequence[signCount] = '-';
                     signCount++;
-                    led_toggleLED(LED_RED, LED_MODE_ON);
+                    led_glowForMs(LED_GREEN, 500);
+
             } else {
-                led_toggleLED(LED_GREEN, LED_MODE_OFF);
-                led_toggleLED(LED_RED, LED_MODE_OFF);
+
+                // error
+                currentState = FAILURE;
+
             }
 
             pressCounter = 0;
@@ -94,29 +66,87 @@ __interrupt void TimerA0_ISR (void) {
 
 }
 
+void checkInput() {
+
+}
+
+void checkSuccess() {
+
+}
+
+void checkFailure() {
+    // delete sequence
+    volatile int i;
+
+    for(i = 0; i < sizeof(sequence); i++)
+    {
+        sequence[i] = '\x00';
+    }
+
+
+    // glow red led for 10 seconds
+    led_glowForMs(LED_RED, 1000);
+
+    currentState = IDLE;
+}
+
+
+#pragma vector = TIMER0_A0_VECTOR
+__interrupt void TimerA0_ISR (void) {
+
+    switch(currentState) {
+        case INPUT:
+            handleInput();
+            break;
+
+        case CHECK_INPUT:
+            checkInput();
+            break;
+
+        case SUCCESS:
+            checkSuccess();
+            break;
+
+        case FAILURE:
+            checkFailure();
+            break;
+
+        case IDLE:
+            if(led_getCurrentMode(LED_RED) == LED_MODE_OFF &&
+               led_getCurrentMode(LED_GREEN) == LED_MODE_OFF) {
+               currentState = INPUT;
+            }
+            break;
+    }
+
+
+    TA0CCTL0 &= ~CCIFG;
+
+}
+
 int main(void)
 {
     WDTCTL = WDTPW | WDTHOLD;   // stop watchdog timer
     PM5CTL0 &= ~LOCKLPM5;
+
+    P1OUT = 0x06;
 
     led_init();
 
     buttons_enableButton(BUTTON_1);
     buttons_enableButton(BUTTON_2);
 
-    P1OUT = 0x06;
-
+    currentState = INPUT;
 
     // Timer --------------------------
     TA0CCR0 = 10000; // 1 ms @ 1MHz
 
     TA0CCTL0 |= CCIE;
     TA0CTL = TASSEL_2 | ID_0 | MC_1 | TACLR;
-
-    _enable_interrupt();
     // --------------------------------
 
-    led_toggleLED(LED_RED, LED_MODE_OFF);
+    _enable_interrupt();
+
     while (1);
 
     return 0;
