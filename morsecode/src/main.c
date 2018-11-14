@@ -1,10 +1,8 @@
+#include <stdio.h>
 #include <msp430.h>
 #include "drivers/led.h"
 #include "drivers/buttons.h"
 #include "main.h"
-
-
-static volatile State currentState;
 
 
 void handleInput() {
@@ -21,9 +19,7 @@ void handleInput() {
         // increment the counter
         pressCounter++;
     } else {
-
-        // switch off the LED
-        led_toggleLED(LED_RED, LED_MODE_OFF);
+        // no button is pressed
 
         // if the counter is > 0 and no button is pressed:
         // ==> button got released
@@ -34,7 +30,7 @@ void handleInput() {
             float minValue = (float)(ditDuration * (1 - (percentageOff/100)));
             float maxValue = (float)(ditDuration * (1 + (percentageOff/100)));
 
-            // dit or dah?
+            // check if dit or dah?
             if((float)pressCounter >= minValue &&
                (float)pressCounter <= maxValue) {
                     // dit
@@ -42,6 +38,11 @@ void handleInput() {
                     sequence[signCount] = '.';
                     signCount++;
                     led_glowForMs(LED_GREEN, 500);
+
+                    led_toggleLED(LED_RED, LED_MODE_OFF);
+
+                    if(firstChar == 1)
+                        firstChar = 0;
 
             } else if((float)pressCounter >= minValue &&
                       (float)pressCounter <= maxValue) {
@@ -51,6 +52,10 @@ void handleInput() {
                     signCount++;
                     led_glowForMs(LED_GREEN, 500);
 
+                    led_toggleLED(LED_RED, LED_MODE_OFF);
+
+                    if(firstChar == 1)
+                        firstChar = 0;
             } else {
 
                 // error
@@ -60,23 +65,67 @@ void handleInput() {
 
             pressCounter = 0;
 
+        } else {
+            // no button was pressed -> pause
+            pauseCounter++;
         }
     }
 
+    // break between words
+    if(pauseCounter % 180 == 0 && firstChar == 0) {
+        sequence[signCount] = '_';
+        signCount++;
+    }
+
+    // if 10 seconds have passed => check the input
+    if(currentState == INPUT && pauseCounter > 10000) {
+        currentState = CHECK_INPUT;
+        pauseCounter = 0;
+    }
 
 }
 
 void checkInput() {
 
+    volatile int success = 1;
+    volatile int i = 0;
+
+    for(i = 0; i < sizeof(wordToMorse); i++) {
+        if(sequence[i] != wordToMorse[i]) {
+            success = 0;
+        }
+    }
+
+    for(i = sizeof(wordToMorse); i < sizeof(sequence); i++) {
+       if(sequence[i] != '_' && sequence[i] != '\x00') {
+           success = 0;
+       }
+   }
+
+    // light up green LED for 10s
+    if(success == 1) {
+        led_glowForMs(LED_GREEN, 10000);
+        currentState = WAITING_FOR_RESTART;
+    } else {
+        led_glowForMs(LED_RED, 10000);
+        currentState = WAITING_FOR_RESTART;
+    }
+
+
 }
 
-void checkSuccess() {
+void waitForRestart() {
 
+    if(led_getCurrentMode(LED_RED) == LED_MODE_OFF &&
+            led_getCurrentMode(LED_GREEN) == LED_MODE_OFF) {
+
+        currentState = INPUT;
+    }
 }
 
 void checkFailure() {
     // delete sequence
-    volatile int i;
+    volatile unsigned int i = 0;
 
     for(i = 0; i < sizeof(sequence); i++)
     {
@@ -85,9 +134,9 @@ void checkFailure() {
 
 
     // glow red led for 10 seconds
-    led_glowForMs(LED_RED, 1000);
+    led_glowForMs(LED_RED, 10000);
 
-    currentState = IDLE;
+    currentState = WAITING_FOR_RESTART;
 }
 
 
@@ -103,19 +152,12 @@ __interrupt void TimerA0_ISR (void) {
             checkInput();
             break;
 
-        case SUCCESS:
-            checkSuccess();
+        case WAITING_FOR_RESTART:
+            waitForRestart();
             break;
 
         case FAILURE:
             checkFailure();
-            break;
-
-        case IDLE:
-            if(led_getCurrentMode(LED_RED) == LED_MODE_OFF &&
-               led_getCurrentMode(LED_GREEN) == LED_MODE_OFF) {
-               currentState = INPUT;
-            }
             break;
     }
 

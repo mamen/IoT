@@ -12,7 +12,36 @@ GEN_CMDS__FLAG :=
 ORDERED_OBJS += \
 "./src/drivers/buttons.obj" \
 "./src/drivers/led.obj" \
+"./src/hal/MSP430FR5xx_6xx/adc12_b.obj" \
+"./src/hal/MSP430FR5xx_6xx/aes256.obj" \
+"./src/hal/MSP430FR5xx_6xx/comp_e.obj" \
+"./src/hal/MSP430FR5xx_6xx/crc.obj" \
+"./src/hal/MSP430FR5xx_6xx/crc32.obj" \
+"./src/hal/MSP430FR5xx_6xx/cs.obj" \
+"./src/hal/MSP430FR5xx_6xx/dma.obj" \
+"./src/hal/MSP430FR5xx_6xx/esi.obj" \
+"./src/hal/MSP430FR5xx_6xx/eusci_a_spi.obj" \
+"./src/hal/MSP430FR5xx_6xx/eusci_a_uart.obj" \
+"./src/hal/MSP430FR5xx_6xx/eusci_b_i2c.obj" \
+"./src/hal/MSP430FR5xx_6xx/eusci_b_spi.obj" \
+"./src/hal/MSP430FR5xx_6xx/framctl.obj" \
+"./src/hal/MSP430FR5xx_6xx/gpio.obj" \
+"./src/hal/MSP430FR5xx_6xx/lcd_c.obj" \
+"./src/hal/MSP430FR5xx_6xx/mpu.obj" \
+"./src/hal/MSP430FR5xx_6xx/mpy32.obj" \
+"./src/hal/MSP430FR5xx_6xx/pmm.obj" \
+"./src/hal/MSP430FR5xx_6xx/ram.obj" \
+"./src/hal/MSP430FR5xx_6xx/ref_a.obj" \
+"./src/hal/MSP430FR5xx_6xx/rtc_b.obj" \
+"./src/hal/MSP430FR5xx_6xx/rtc_c.obj" \
+"./src/hal/MSP430FR5xx_6xx/sfr.obj" \
+"./src/hal/MSP430FR5xx_6xx/sysctl.obj" \
+"./src/hal/MSP430FR5xx_6xx/timer_a.obj" \
+"./src/hal/MSP430FR5xx_6xx/timer_b.obj" \
+"./src/hal/MSP430FR5xx_6xx/tlv.obj" \
+"./src/hal/MSP430FR5xx_6xx/wdt_a.obj" \
 "./src/hal/gpio.obj" \
+"./src/hal/hal_LCD.obj" \
 "./src/main.obj" \
 "../lnk_msp430fr6989.cmd" \
 $(GEN_CMDS__FLAG) \
@@ -29,10 +58,12 @@ RMDIR := RMDIR /S/Q
 -include sources.mk
 -include subdir_vars.mk
 -include src/drivers/subdir_vars.mk
+-include src/hal/MSP430FR5xx_6xx/subdir_vars.mk
 -include src/hal/subdir_vars.mk
 -include src/subdir_vars.mk
 -include subdir_rules.mk
 -include src/drivers/subdir_rules.mk
+-include src/hal/MSP430FR5xx_6xx/subdir_rules.mk
 -include src/hal/subdir_rules.mk
 -include src/subdir_rules.mk
 -include objects.mk
@@ -165,8 +196,10 @@ morsecode.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "src\drivers\buttons.obj" "src\drivers\led.obj" "src\hal\gpio.obj" "src\main.obj" 
-	-$(RM) "src\drivers\buttons.d" "src\drivers\led.d" "src\hal\gpio.d" "src\main.d" 
+	-$(RM) "src\drivers\buttons.obj" "src\drivers\led.obj" "src\hal\MSP430FR5xx_6xx\adc12_b.obj" "src\hal\MSP430FR5xx_6xx\aes256.obj" "src\hal\MSP430FR5xx_6xx\comp_e.obj" "src\hal\MSP430FR5xx_6xx\crc.obj" "src\hal\MSP430FR5xx_6xx\crc32.obj" "src\hal\MSP430FR5xx_6xx\cs.obj" "src\hal\MSP430FR5xx_6xx\dma.obj" "src\hal\MSP430FR5xx_6xx\esi.obj" "src\hal\MSP430FR5xx_6xx\eusci_a_spi.obj" "src\hal\MSP430FR5xx_6xx\eusci_a_uart.obj" "src\hal\MSP430FR5xx_6xx\eusci_b_i2c.obj" "src\hal\MSP430FR5xx_6xx\eusci_b_spi.obj" "src\hal\MSP430FR5xx_6xx\framctl.obj" "src\hal\MSP430FR5xx_6xx\gpio.obj" "src\hal\MSP430FR5xx_6xx\lcd_c.obj" "src\hal\MSP430FR5xx_6xx\mpu.obj" "src\hal\MSP430FR5xx_6xx\mpy32.obj" "src\hal\MSP430FR5xx_6xx\pmm.obj" "src\hal\MSP430FR5xx_6xx\ram.obj" "src\hal\MSP430FR5xx_6xx\ref_a.obj" "src\hal\MSP430FR5xx_6xx\rtc_b.obj" "src\hal\MSP430FR5xx_6xx\rtc_c.obj" "src\hal\MSP430FR5xx_6xx\sfr.obj" "src\hal\MSP430FR5xx_6xx\sysctl.obj" "src\hal\MSP430FR5xx_6xx\timer_a.obj" "src\hal\MSP430FR5xx_6xx\timer_b.obj" 
+	-$(RM) "src\hal\MSP430FR5xx_6xx\tlv.obj" "src\hal\MSP430FR5xx_6xx\wdt_a.obj" "src\hal\gpio.obj" "src\hal\hal_LCD.obj" "src\main.obj" 
+	-$(RM) "src\drivers\buttons.d" "src\drivers\led.d" "src\hal\MSP430FR5xx_6xx\adc12_b.d" "src\hal\MSP430FR5xx_6xx\aes256.d" "src\hal\MSP430FR5xx_6xx\comp_e.d" "src\hal\MSP430FR5xx_6xx\crc.d" "src\hal\MSP430FR5xx_6xx\crc32.d" "src\hal\MSP430FR5xx_6xx\cs.d" "src\hal\MSP430FR5xx_6xx\dma.d" "src\hal\MSP430FR5xx_6xx\esi.d" "src\hal\MSP430FR5xx_6xx\eusci_a_spi.d" "src\hal\MSP430FR5xx_6xx\eusci_a_uart.d" "src\hal\MSP430FR5xx_6xx\eusci_b_i2c.d" "src\hal\MSP430FR5xx_6xx\eusci_b_spi.d" "src\hal\MSP430FR5xx_6xx\framctl.d" "src\hal\MSP430FR5xx_6xx\gpio.d" "src\hal\MSP430FR5xx_6xx\lcd_c.d" "src\hal\MSP430FR5xx_6xx\mpu.d" "src\hal\MSP430FR5xx_6xx\mpy32.d" "src\hal\MSP430FR5xx_6xx\pmm.d" "src\hal\MSP430FR5xx_6xx\ram.d" "src\hal\MSP430FR5xx_6xx\ref_a.d" "src\hal\MSP430FR5xx_6xx\rtc_b.d" "src\hal\MSP430FR5xx_6xx\rtc_c.d" "src\hal\MSP430FR5xx_6xx\sfr.d" "src\hal\MSP430FR5xx_6xx\sysctl.d" "src\hal\MSP430FR5xx_6xx\timer_a.d" "src\hal\MSP430FR5xx_6xx\timer_b.d" "src\hal\MSP430FR5xx_6xx\tlv.d" "src\hal\MSP430FR5xx_6xx\wdt_a.d" 
+	-$(RM) "src\hal\gpio.d" "src\hal\hal_LCD.d" "src\main.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

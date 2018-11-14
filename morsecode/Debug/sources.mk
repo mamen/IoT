@@ -113,6 +113,7 @@ PDE_DEPS__QUOTED :=
 SUBDIRS := \
 . \
 src/drivers \
+src/hal/MSP430FR5xx_6xx \
 src/hal \
 src \
 

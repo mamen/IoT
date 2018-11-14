@@ -13,28 +13,41 @@ volatile int msGlowedGreen = 0;
 volatile int ledToGlowRed = 0;
 volatile int ledToGlowGreen = 0;
 
+volatile int ledGlowModeGreen = 0;
+volatile int ledGlowModeRed = 0;
+
 #pragma vector = TIMER1_A0_VECTOR
 __interrupt void TimerA1_ISR (void) {
 
     if(ledToGlowRed == 1) {
         msGlowedRed++;
 
+        if(ledGlowModeRed == 1) {
+            led_toggleLED(LED_RED, LED_MODE_TOGGLE);
+        }
+
         if(msGlowedRed == msToGlowRed) {
             led_toggleLED(LED_RED, LED_MODE_OFF);
             ledToGlowRed = 0;
             msGlowedRed = 0;
             msToGlowRed = 0;
+            ledGlowModeRed = 0;
         }
     }
 
     if(ledToGlowGreen == 1) {
         msGlowedGreen++;
 
+        if(ledGlowModeGreen == 1) {
+            led_toggleLED(LED_GREEN, LED_MODE_TOGGLE);
+        }
+
         if(msGlowedGreen == msToGlowGreen) {
             led_toggleLED(LED_GREEN, LED_MODE_OFF);
             ledToGlowGreen = 0;
             msGlowedGreen = 0;
             msToGlowGreen = 0;
+            ledGlowModeGreen = 0;
         }
     }
 
@@ -86,10 +99,18 @@ void led_toggleLED(int ledNum, int mode) {
         // blink
         case 3:
             // timer
-            TA1CCR0 = 999; // 10 ms @ 1MHz
+            TA1CCR0 = 999; // 1 ms @ 1MHz
 
             TA1CCTL0 |= CCIE;
             TA1CTL = TASSEL_2 | ID_2 | MC_1;
+
+            if(ledNum == LED_GREEN) {
+                ledGlowModeGreen = 1;
+            } else {
+                ledGlowModeRed = 1;
+            }
+
+
             break;
 
     }
@@ -109,14 +130,17 @@ int led_getCurrentMode(int ledNum) {
 
 void led_glowForMs(int ledNum, int ms) {
 
+
     if(ledNum == LED_RED) {
         msToGlowRed = ms;
         ledToGlowRed = 1;
+        ledGlowModeGreen = 0;
     }
 
     if(ledNum == LED_GREEN) {
         msToGlowGreen = ms;
         ledToGlowGreen = 1;
+        ledGlowModeRed = 0;
     }
 
     led_toggleLED(ledNum, LED_MODE_ON);
