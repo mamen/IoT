@@ -6,6 +6,17 @@
 
 
 /**
+ * TODO:
+ *
+ * Display values on LCD
+ * Switch display modes on LCD with buttons
+ * Read CO2 sensor
+ * Code-Cleanup
+ *
+ */
+
+
+/**
  * main.c
  */
 int main(void)
@@ -22,6 +33,7 @@ int main(void)
 
 	while(1) {
 	    SHT21_readTemperature();
+        SHT21_readHumidity();
 	}
 
 	return 0;

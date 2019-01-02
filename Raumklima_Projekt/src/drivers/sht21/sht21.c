@@ -90,7 +90,50 @@ void SHT21_readTemperature(){
 
 void SHT21_readHumidity(){
 
-    uart_writeString(UART1, "hum");
+
+    SHT21_init();
+
+    g_hum = 0.0f;
+
+
+    // Send humidity read command
+    UCB0CTL1 |= UCTXSTT;                    // Send start
+    while(!(UCB0IFG & UCTXIFG0));           // Wait for tx interrupt flag
+    UCB0TXBUF = SHT21_HUM_NOBLOCK;          // Send data byte
+    while(!(UCB0IFG & UCTXIFG0));           // Wait for tx interrupt flag
+    UCB0CTLW0 |= UCTXSTP;                   // Send stop
+    UCB0CTLW0 &= ~UCTR;                     // Change to receive
+    while (UCB0CTLW0 & UCTXSTP);            // Ensure stop condition got sent
+
+
+    // Setup timer for 29ms
+    TB0CCTL0 = CCIE;                          // TBCCR0 interrupt enabled
+    TB0CCR0 = 1300;                         // (960 ticks) * (1 second / 32768 ticks) = 39.7 ms > 29 ms required
+    TB0CTL = TBSSEL__ACLK | MC__UP;           // ACLK, up mode
+
+    __bis_SR_register(LPM3_bits);       // Enter LPM3 w/ interrupt
+
+
+    // Start transfer
+    UCB0CTL1 |= UCTXSTT;
+    while(UCB0CTLW0 & UCTXSTT);             // Wait for ready
+    while(!(UCB0IFG & UCRXIFG));            // Wait for receive
+    g_shtRxArr[0] = UCB0RXBUF;              // Read first byte
+    while(!(UCB0IFG & UCRXIFG));            // Wait for second byte
+    g_shtRxArr[1] = UCB0RXBUF;              // Read second byte
+    while(UCB0CTLW0 & UCTXSTP);             // Wait for stop
+
+
+    uint16_t humRaw = ((uint16_t)g_shtRxArr[0] << 8) | (uint16_t)(g_shtRxArr[1]);
+    g_hum = (float)(humRaw & 0xFFFC);
+    g_hum = -6.0f + 125.0f * (g_hum/65536.0f);
+
+
+    char str[80];
+    sprintf(str, "The room currently has a humidity of %d percent.\r\n", (int)g_hum);
+
+
+    uart_writeString(UART1, str);
 
 }
 
