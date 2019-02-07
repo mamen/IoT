@@ -36,7 +36,7 @@ void SHT21_init() {
     UCB0IE &= ~UCRXIE;
 }
 
-void SHT21_readTemperature(){
+float SHT21_readTemperature(){
 
 
     SHT21_init();
@@ -51,16 +51,8 @@ void SHT21_readTemperature(){
     while(!(UCB0IFG & UCTXIFG0));           // Wait for tx interrupt flag
     UCB0CTLW0 |= UCTXSTP;                   // Send stop
     UCB0CTLW0 &= ~UCTR;                     // Change to receive
-    while (UCB0CTLW0 & UCTXSTP);            // Ensure stop condition got sent
 
-
-    // Setup timer for 85ms measurement delay
-    TB0CCTL0 = CCIE;                          // TBCCR0 interrupt enabled
-    TB0CCR0 = 5000;                         // (2800 ticks) * (1 second / 32768 ticks) = 97.6 ms > 85 ms required
-    TB0CTL = TBSSEL__ACLK | MC__UP;           // ACLK, up mode
-
-    __bis_SR_register(LPM3_bits);       // Enter LPM3 w/ interrupt
-
+    system_sleep(90);
 
     // Read the current temperature
     UCB0CTL1 |= UCTXSTT;
@@ -77,18 +69,13 @@ void SHT21_readTemperature(){
     g_temp = (float)(tempRaw & 0xFFFC);
     g_temp = -46.85f + 175.72f * (g_temp/65536.0f);
 
-
-    char str[80];
-    sprintf(str, "The room currently has about %d degrees.\r\n", (int)g_temp);
-
-
-    uart_writeString(UART1, str);
+    return g_temp;
 
 }
 
 
 
-void SHT21_readHumidity(){
+float SHT21_readHumidity(){
 
 
     SHT21_init();
@@ -105,14 +92,7 @@ void SHT21_readHumidity(){
     UCB0CTLW0 &= ~UCTR;                     // Change to receive
     while (UCB0CTLW0 & UCTXSTP);            // Ensure stop condition got sent
 
-
-    // Setup timer for 29ms
-    TB0CCTL0 = CCIE;                          // TBCCR0 interrupt enabled
-    TB0CCR0 = 1300;                         // (960 ticks) * (1 second / 32768 ticks) = 39.7 ms > 29 ms required
-    TB0CTL = TBSSEL__ACLK | MC__UP;           // ACLK, up mode
-
-    __bis_SR_register(LPM3_bits);       // Enter LPM3 w/ interrupt
-
+    system_sleep(90);
 
     // Start transfer
     UCB0CTL1 |= UCTXSTT;
@@ -129,11 +109,7 @@ void SHT21_readHumidity(){
     g_hum = -6.0f + 125.0f * (g_hum/65536.0f);
 
 
-    char str[80];
-    sprintf(str, "The room currently has a humidity of %d percent.\r\n", (int)g_hum);
-
-
-    uart_writeString(UART1, str);
+    return g_hum;
 
 }
 

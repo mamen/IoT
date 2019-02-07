@@ -13,6 +13,7 @@
 #include <stdbool.h>
 
 #include "gpio.h"
+#include "lcd.h"
 #include "UART.h"
 
 
