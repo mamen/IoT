@@ -15,6 +15,7 @@
 #include "gpio.h"
 #include "lcd.h"
 #include "UART.h"
+#include "adc.h"
 
 
 #endif /* SRC_HAL_HAL_H_ */

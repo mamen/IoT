@@ -33,4 +33,19 @@ void main(void) {
         do i--;
         while(i != 0);
     }
+
+    return 0;
+}
+
+
+#pragma vector = TIMER0_A0_VECTOR
+__interrupt void TA_0_ISR(void)
+{
+    volatile int a = 3;
+}
+
+#pragma vector = TIMER0_A1_VECTOR
+__interrupt void TIMER0_A1_ISR (void)
+{
+    volatile int a = 5;
 }
