@@ -31,25 +31,23 @@ void app_showHumidity() {
 
 
 void app_showAirQuality() {
-//    int co2ppm = MQRead();
+    float co2ppm = mq135_read();
 
-    char buffer[6];
+    char buffer[7];
 
-    if(airQualityStatus == 0) {
-        buffer[0] = 'A';
-        buffer[1] = 'L';
-        buffer[2] = 'L';
-        buffer[3] = ' ';
-        buffer[4] = 'O';
-        buffer[5] = 'K';
-    } else {
-        buffer[0] = 'N';
-        buffer[1] = 'O';
-        buffer[2] = 'T';
-        buffer[3] = ' ';
-        buffer[4] = 'O';
-        buffer[5] = 'K';
+    intToString((int)co2ppm, buffer);
+
+    int i;
+
+    for(i = 0; i < 7; i++) {
+        if(buffer[i] == '\x00') {
+                buffer[i] = ' ';
+            }
     }
+
+    buffer[4] = 'C';
+    buffer[5] = 'O';
+    buffer[6] = '2';
 
     lcd_writeString(buffer);
 }
@@ -108,17 +106,19 @@ void app_run() {
     buttons_init();
     lcd_init();
     SHT21_init();
-    adc_init();
 
-    uart_init(UART1);
     led_init();
-
+    adc_init();
     mq135_init();
 
     buttons_enableButton(BUTTON_1);
     buttons_enableButton(BUTTON_2);
 
+    uart_init(UART1);
+
     app_updateDisplay();
+
+    int airQualityStatus;
 
     while(1) {
 
@@ -132,7 +132,7 @@ void app_run() {
                 led_setMode(LED_RED, LED_MODE_OFF);
             }
 
-            system_sleep(500);
+            system_sleep(10);
             app_updateDisplay();
         }
 

@@ -11,7 +11,4 @@ void adc_init() {
     ADC12IER0 |= ADC12IE0;
     ADC12MCTL0 |= ADC12INCH_10 | ADC12VRSEL_1 | ADC12EOS;
 
-
-
-
 }

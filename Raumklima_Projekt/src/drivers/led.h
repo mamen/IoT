@@ -8,6 +8,8 @@
 #ifndef DRIVERS_LED_H_
 #define DRIVERS_LED_H_
 
+#include <msp430.h>
+
 #define LED_PIN_RED (1<<0)
 #define LED_PIN_GREEN (1<<7)
 
@@ -20,9 +22,9 @@ typedef enum {
 typedef enum {
     LED_RED,
     LED_GREEN
-} LED_NUM_t;
+} LED_TYPE_t;
 
 void led_init();
-void led_setMode(LED_NUM_t ledNum, LED_STATE_t mode);
+void led_setMode(LED_TYPE_t ledNum, LED_STATE_t mode);
 
 #endif /* DRIVERS_LED_H_ */

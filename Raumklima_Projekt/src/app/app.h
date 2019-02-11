@@ -24,7 +24,6 @@ typedef enum {
 } SwitchDirection_t;
 
 volatile static State_t currentState = AIRQUALITY;
-volatile static int airQualityStatus;
 
 void app_showTemperature();
 void app_showHumidity();

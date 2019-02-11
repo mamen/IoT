@@ -1,4 +1,3 @@
-#include <msp430.h>
 #include "led.h"
 
 
@@ -13,25 +12,25 @@ void led_init() {
 }
 
 
-void led_setMode(LED_NUM_t ledNum, LED_STATE_t mode) {
+void led_setMode(LED_TYPE_t led, LED_STATE_t mode) {
     switch(mode) {
         // off
         case LED_MODE_OFF:
-            if(ledNum == LED_RED)
+            if(led == LED_RED)
                 P1OUT &= ~LED_PIN_RED;
             else
                 P9OUT &= ~LED_PIN_GREEN;
             break;
         // on
         case LED_MODE_ON:
-            if(ledNum == LED_RED)
+            if(led == LED_RED)
                 P1OUT |= LED_PIN_RED;
             else
                 P9OUT |= LED_PIN_GREEN;
             break;
         // toggle
         case LED_MODE_TOGGLE:
-            if(ledNum == LED_RED)
+            if(led == LED_RED)
                 P1OUT ^= LED_PIN_RED;
             else
                 P9OUT ^= LED_PIN_GREEN;
