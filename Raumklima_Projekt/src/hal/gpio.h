@@ -1,10 +1,3 @@
-/*
- * gpio.h
- *
- *  Created on: 19 Dec 2018
- *      Author: markus
- */
-
 #ifndef SRC_HAL_GPIO_H_
 #define SRC_HAL_GPIO_H_
 
@@ -47,7 +40,10 @@ typedef enum {
     INPUT
 } GPIO_DIRECTION_t;
 
+#define BIT_16_MASK 0xFFFF
 
+void gpio_multiplex(GPIO_PORT_t port, GPIO_PIN_t pin, GPIO_FUNC_t func);
+void gpio_toggle(GPIO_PORT_t port, GPIO_PIN_t pin);
 void gpio_setDirection(GPIO_PORT_t port, GPIO_PIN_t pin, GPIO_DIRECTION_t dir);
 void gpio_init();
 

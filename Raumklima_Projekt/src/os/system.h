@@ -1,10 +1,3 @@
-/*
- * system.h
- *
- *  Created on: 7 Feb 2019
- *      Author: markus
- */
-
 #ifndef SRC_OS_SYSTEM_H_
 #define SRC_OS_SYSTEM_H_
 

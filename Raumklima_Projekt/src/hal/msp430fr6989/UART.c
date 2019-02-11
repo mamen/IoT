@@ -1,21 +1,8 @@
-/*
- * UART.c
- *
- *  Created on: 2 Jan 2019
- *      Author: markus
- */
-
 #include <stdio.h>
 #include <inttypes.h>
 #include <stdbool.h>
 #include "../gpio.h"
 #include "../uart.h"
-
-#define UARTSYSCLK      (1000000)
-#define UART1_CLKDIV_0     (0x68)
-#define UART1_CLKDIV_1     (0x00)
-#define UART0_CLKDIV_0     (0x68)
-#define UART0_CLKDIV_1     (0x00)
 
 void uart_init(UART_t uart)
 {

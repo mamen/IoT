@@ -1,14 +1,8 @@
-/*
- * adc.h
- *
- *  Created on: 9 Feb 2019
- *      Author: markus
- */
-
 #ifndef SRC_HAL_ADC_H_
 #define SRC_HAL_ADC_H_
 
 #include <msp430.h>
+#include "gpio.h"
 
 #define ADC12_SHT_16 0x0200 // 16 clock cycles for sample and hold
 #define ADC12_ON 0x0010 // Used to turn ADC12 peripheral on

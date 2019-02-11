@@ -1,6 +1,6 @@
 #include "system.h"
 
-static uint32_t gSystick = 0;
+volatile static uint32_t gSystick = 0;
 
 // Timer A0 interrupt service routine
 #pragma vector = TIMER0_A0_VECTOR

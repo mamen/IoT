@@ -1,4 +1,3 @@
-#include <msp430.h>
 #include "buttons.h"
 
 
@@ -27,9 +26,9 @@ int buttons_isButtonPressed(int button) {
 
 }
 
+// set pull-up resistors
 void buttons_enableButton(int button) {
 
-    // set pull-up resistors
     switch(button) {
         case 1:
             P1REN |= (1 << BUTTON_S1_PIN);
@@ -37,9 +36,8 @@ void buttons_enableButton(int button) {
             break;
 
         case 2:
-
-            P2REN |= (1 << BUTTON_S2_PIN);
-            P2OUT |= (1 << BUTTON_S2_PIN);
+            P1REN |= (1 << BUTTON_S2_PIN);
+            P1OUT |= (1 << BUTTON_S2_PIN);
             break;
     }
 }

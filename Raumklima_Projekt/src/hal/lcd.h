@@ -1,13 +1,9 @@
-/*
- * lcd.h
- *
- *  Created on: 14.01.2018
- *      Author: phwo
- */
-
 #ifndef LCD_H_
 #define LCD_H_
 
+#include <msp430.h>
+#include <inttypes.h>
+#include <string.h>
 
 void lcd_init();
 void lcd_clear();

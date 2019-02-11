@@ -1,8 +1,5 @@
 #include "../gpio.h"
 
-
-#define BIT_16_MASK 0xFFFF
-
 void gpio_multiplex(GPIO_PORT_t port, GPIO_PIN_t pin, GPIO_FUNC_t func) {
 
     switch(port) {
@@ -10,20 +7,20 @@ void gpio_multiplex(GPIO_PORT_t port, GPIO_PIN_t pin, GPIO_FUNC_t func) {
 
             switch(func) {
                 case F1:
-                    P1SEL0 &= ~(1 << pin);
-                    P1SEL1 &= ~(1 << pin);
+                    P1SEL0 &= ~(1 << func);
+                    P1SEL1 &= ~(1 << func);
                     break;
                 case F2:
-                    P1SEL0 &= ~(1 << pin);
-                    P1SEL1 |= ~(1 << pin);
+                    P1SEL0 &= ~(1 << func);
+                    P1SEL1 |= ~(1 << func);
                     break;
                 case F3:
-                    P1SEL0 |= ~(1 << pin);
-                    P1SEL1 &= ~(1 << pin);
+                    P1SEL0 |= ~(1 << func);
+                    P1SEL1 &= ~(1 << func);
                     break;
                 case F4:
-                    P1SEL0 |= ~(1 << pin);
-                    P1SEL1 |= ~(1 << pin);
+                    P1SEL0 |= ~(1 << func);
+                    P1SEL1 |= ~(1 << func);
                     break;
             }
 
@@ -33,20 +30,20 @@ void gpio_multiplex(GPIO_PORT_t port, GPIO_PIN_t pin, GPIO_FUNC_t func) {
 
             switch(func) {
                 case F1:
-                    P2SEL0 &= ~(1 << pin);
-                    P2SEL1 &= ~(1 << pin);
+                    P2SEL0 &= ~(1 << func);
+                    P2SEL1 &= ~(1 << func);
                     break;
                 case F2:
-                    P2SEL0 &= ~(1 << pin);
-                    P2SEL1 |= ~(1 << pin);
+                    P2SEL0 &= ~(1 << func);
+                    P2SEL1 |= ~(1 << func);
                     break;
                 case F3:
-                    P2SEL0 |= ~(1 << pin);
-                    P2SEL1 &= ~(1 << pin);
+                    P2SEL0 |= ~(1 << func);
+                    P2SEL1 &= ~(1 << func);
                     break;
                 case F4:
-                    P2SEL0 |= ~(1 << pin);
-                    P2SEL1 |= ~(1 << pin);
+                    P2SEL0 |= ~(1 << func);
+                    P2SEL1 |= ~(1 << func);
                     break;
             }
 
@@ -56,20 +53,20 @@ void gpio_multiplex(GPIO_PORT_t port, GPIO_PIN_t pin, GPIO_FUNC_t func) {
 
             switch(func) {
                 case F1:
-                    P3SEL0 &= ~(1 << pin);
-                    P3SEL1 &= ~(1 << pin);
+                    P3SEL0 &= ~(1 << func);
+                    P3SEL1 &= ~(1 << func);
                     break;
                 case F2:
-                    P3SEL0 &= ~(1 << pin);
-                    P3SEL1 |= ~(1 << pin);
+                    P3SEL0 &= ~(1 << func);
+                    P3SEL1 |= ~(1 << func);
                     break;
                 case F3:
-                    P3SEL0 |= ~(1 << pin);
-                    P3SEL1 &= ~(1 << pin);
+                    P3SEL0 |= ~(1 << func);
+                    P3SEL1 &= ~(1 << func);
                     break;
                 case F4:
-                    P3SEL0 |= ~(1 << pin);
-                    P3SEL1 |= ~(1 << pin);
+                    P3SEL0 |= ~(1 << func);
+                    P3SEL1 |= ~(1 << func);
                     break;
             }
 
@@ -79,20 +76,20 @@ void gpio_multiplex(GPIO_PORT_t port, GPIO_PIN_t pin, GPIO_FUNC_t func) {
 
             switch(func) {
                 case F1:
-                    P4SEL0 &= ~(1 << pin);
-                    P4SEL1 &= ~(1 << pin);
+                    P4SEL0 &= ~(1 << func);
+                    P4SEL1 &= ~(1 << func);
                     break;
                 case F2:
-                    P4SEL0 &= ~(1 << pin);
-                    P4SEL1 |= ~(1 << pin);
+                    P4SEL0 &= ~(1 << func);
+                    P4SEL1 |= ~(1 << func);
                     break;
                 case F3:
-                    P4SEL0 |= ~(1 << pin);
-                    P4SEL1 &= ~(1 << pin);
+                    P4SEL0 |= ~(1 << func);
+                    P4SEL1 &= ~(1 << func);
                     break;
                 case F4:
-                    P4SEL0 |= ~(1 << pin);
-                    P4SEL1 |= ~(1 << pin);
+                    P4SEL0 |= ~(1 << func);
+                    P4SEL1 |= ~(1 << func);
                     break;
             }
 
@@ -102,20 +99,20 @@ void gpio_multiplex(GPIO_PORT_t port, GPIO_PIN_t pin, GPIO_FUNC_t func) {
 
             switch(func) {
                 case F1:
-                    P5SEL0 &= ~(1 << pin);
-                    P5SEL1 &= ~(1 << pin);
+                    P5SEL0 &= ~(1 << func);
+                    P5SEL1 &= ~(1 << func);
                     break;
                 case F2:
-                    P5SEL0 &= ~(1 << pin);
-                    P5SEL1 |= ~(1 << pin);
+                    P5SEL0 &= ~(1 << func);
+                    P5SEL1 |= ~(1 << func);
                     break;
                 case F3:
-                    P5SEL0 |= ~(1 << pin);
-                    P5SEL1 &= ~(1 << pin);
+                    P5SEL0 |= ~(1 << func);
+                    P5SEL1 &= ~(1 << func);
                     break;
                 case F4:
-                    P5SEL0 |= ~(1 << pin);
-                    P5SEL1 |= ~(1 << pin);
+                    P5SEL0 |= ~(1 << func);
+                    P5SEL1 |= ~(1 << func);
                     break;
             }
 
@@ -125,20 +122,20 @@ void gpio_multiplex(GPIO_PORT_t port, GPIO_PIN_t pin, GPIO_FUNC_t func) {
 
             switch(func) {
                 case F1:
-                    P6SEL0 &= ~(1 << pin);
-                    P6SEL1 &= ~(1 << pin);
+                    P6SEL0 &= ~(1 << func);
+                    P6SEL1 &= ~(1 << func);
                     break;
                 case F2:
-                    P6SEL0 &= ~(1 << pin);
-                    P6SEL1 |= ~(1 << pin);
+                    P6SEL0 &= ~(1 << func);
+                    P6SEL1 |= ~(1 << func);
                     break;
                 case F3:
-                    P6SEL0 |= ~(1 << pin);
-                    P6SEL1 &= ~(1 << pin);
+                    P6SEL0 |= ~(1 << func);
+                    P6SEL1 &= ~(1 << func);
                     break;
                 case F4:
-                    P6SEL0 |= ~(1 << pin);
-                    P6SEL1 |= ~(1 << pin);
+                    P6SEL0 |= ~(1 << func);
+                    P6SEL1 |= ~(1 << func);
                     break;
             }
 
@@ -148,20 +145,20 @@ void gpio_multiplex(GPIO_PORT_t port, GPIO_PIN_t pin, GPIO_FUNC_t func) {
 
             switch(func) {
                 case F1:
-                    P7SEL0 &= ~(1 << pin);
-                    P7SEL1 &= ~(1 << pin);
+                    P7SEL0 &= ~(1 << func);
+                    P7SEL1 &= ~(1 << func);
                     break;
                 case F2:
-                    P7SEL0 &= ~(1 << pin);
-                    P7SEL1 |= ~(1 << pin);
+                    P7SEL0 &= ~(1 << func);
+                    P7SEL1 |= ~(1 << func);
                     break;
                 case F3:
-                    P7SEL0 |= ~(1 << pin);
-                    P7SEL1 &= ~(1 << pin);
+                    P7SEL0 |= ~(1 << func);
+                    P7SEL1 &= ~(1 << func);
                     break;
                 case F4:
-                    P7SEL0 |= ~(1 << pin);
-                    P7SEL1 |= ~(1 << pin);
+                    P7SEL0 |= ~(1 << func);
+                    P7SEL1 |= ~(1 << func);
                     break;
             }
 
@@ -171,20 +168,20 @@ void gpio_multiplex(GPIO_PORT_t port, GPIO_PIN_t pin, GPIO_FUNC_t func) {
 
             switch(func) {
                 case F1:
-                    P8SEL0 &= ~(1 << pin);
-                    P8SEL1 &= ~(1 << pin);
+                    P8SEL0 &= ~(1 << func);
+                    P8SEL1 &= ~(1 << func);
                     break;
                 case F2:
-                    P8SEL0 &= ~(1 << pin);
-                    P8SEL1 |= ~(1 << pin);
+                    P8SEL0 &= ~(1 << func);
+                    P8SEL1 |= ~(1 << func);
                     break;
                 case F3:
-                    P8SEL0 |= ~(1 << pin);
-                    P8SEL1 &= ~(1 << pin);
+                    P8SEL0 |= ~(1 << func);
+                    P8SEL1 &= ~(1 << func);
                     break;
                 case F4:
-                    P8SEL0 |= ~(1 << pin);
-                    P8SEL1 |= ~(1 << pin);
+                    P8SEL0 |= ~(1 << func);
+                    P8SEL1 |= ~(1 << func);
                     break;
             }
 
@@ -194,20 +191,20 @@ void gpio_multiplex(GPIO_PORT_t port, GPIO_PIN_t pin, GPIO_FUNC_t func) {
 
             switch(func) {
                 case F1:
-                    P9SEL0 &= ~(1 << pin);
-                    P9SEL1 &= ~(1 << pin);
+                    P9SEL0 &= ~(1 << func);
+                    P9SEL1 &= ~(1 << func);
                     break;
                 case F2:
-                    P9SEL0 &= ~(1 << pin);
-                    P9SEL1 |= ~(1 << pin);
+                    P9SEL0 &= ~(1 << func);
+                    P9SEL1 |= ~(1 << func);
                     break;
                 case F3:
-                    P9SEL0 |= ~(1 << pin);
-                    P9SEL1 &= ~(1 << pin);
+                    P9SEL0 |= ~(1 << func);
+                    P9SEL1 &= ~(1 << func);
                     break;
                 case F4:
-                    P9SEL0 |= ~(1 << pin);
-                    P9SEL1 |= ~(1 << pin);
+                    P9SEL0 |= ~(1 << func);
+                    P9SEL1 |= ~(1 << func);
                     break;
             }
 

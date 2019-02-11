@@ -1,13 +1,7 @@
-/*
- * timer.h
- *
- *  Created on: 3 Feb 2019
- *      Author: markus
- */
-
 #ifndef SRC_OS_TIMER_H_
 #define SRC_OS_TIMER_H_
 
+#include <msp430.h>
 #include "../board/board.h"
 
 typedef enum {

@@ -1,9 +1,3 @@
-/*
- * app.c
- *
- *  Created on: 7 Feb 2019
- *      Author: markus
- */
 #include "app.h"
 
 void app_showTemperature() {
@@ -24,64 +18,40 @@ void app_showTemperature() {
 void app_showHumidity() {
     float humidity = SHT21_readHumidity();
 
-    char buffer[5];
+    char buffer[7];
 
-    floatToString(humidity, buffer, 2);
+    floatToString(humidity, buffer, 1);
+
+    buffer[4] = ' ';
+    buffer[5] = 'H';
+    buffer[6] = 'u';
 
     lcd_writeString(buffer);
 }
 
 
-unsigned int ADC_value=0, ADC_value2=0;
-
-#pragma vector = ADC12_VECTOR
-__interrupt void ADC12_ISR(void) {
-
-    switch(__even_in_range(ADC12IV, ADC12IV_ADC12RDYIFG)){
-        case ADC12IV_ADC12IFG1:
-            // ADC12MEM1 Interrupt
-            ADC_value = ADC12MEM0;// Save MEM0
-            ADC_value2 = ADC12MEM1;// Save MEM1
-
-            char buff[128];
-
-//            intToString(ADC_value, buff);
-//            uart_writeString(UART1, buff);
-//            uart_writeString(UART1, "\r\n");
-//
-//            intToString(ADC_value2, buff);
-//            uart_writeString(UART1, buff);
-//            uart_writeString(UART1, "\r\n");
-
-            float Ro = 9.83;
-//
-            float resistance = ((1023.0/ADC_value2) * 5. - 1.)*RLOAD;
-
-            float ppm = PARA * pow((resistance/ (resistance * pow((ATMOCO2/PARA), (1.0/PARB)))), -PARB);
-
-            // source: https://angeloloza.blogspot.com/2016/06/android-arduino-air-quality-monitor.html
-//            float realVal = 114.3544 * pow((ADC_value2 / Ro), -2.93599);
-
-            floatToString(ppm, buff, 0);
-            lcd_writeString(buff);
-
-
-            uart_writeString(UART1, buff);
-            uart_writeString(UART1, "\r\n");
-
-
-//            __bic_SR_register_on_exit(LPM0_bits|GIE); // Exit CPU, clearinterrupts
-        break;
-        default:
-            break;
-    }
-}
-
-
 void app_showAirQuality() {
+//    int co2ppm = MQRead();
 
-    ADC12CTL0 |= ADC12ENC | ADC12SC;
-//    __bis_SR_register(LPM0_bits + GIE);
+    char buffer[6];
+
+    if(airQualityStatus == 0) {
+        buffer[0] = 'A';
+        buffer[1] = 'L';
+        buffer[2] = 'L';
+        buffer[3] = ' ';
+        buffer[4] = 'O';
+        buffer[5] = 'K';
+    } else {
+        buffer[0] = 'N';
+        buffer[1] = 'O';
+        buffer[2] = 'T';
+        buffer[3] = ' ';
+        buffer[4] = 'O';
+        buffer[5] = 'K';
+    }
+
+    lcd_writeString(buffer);
 }
 
 void app_updateDisplay() {
@@ -136,42 +106,51 @@ void app_run() {
 
     system_systickInit();
     buttons_init();
-
-
     lcd_init();
-    uart_init(UART1);
-
     SHT21_init();
+    adc_init();
+
+    uart_init(UART1);
+    led_init();
+
+    mq135_init();
 
     buttons_enableButton(BUTTON_1);
     buttons_enableButton(BUTTON_2);
-
-    adc_init();
 
     app_updateDisplay();
 
     while(1) {
 
         while(!buttons_isButtonPressed(BUTTON_1) && !buttons_isButtonPressed(BUTTON_2)) {
+
+            airQualityStatus = P8IN & 0x10;
+
+            if(airQualityStatus == 0) {
+                led_setMode(LED_RED, LED_MODE_ON);
+            } else {
+                led_setMode(LED_RED, LED_MODE_OFF);
+            }
+
             system_sleep(500);
             app_updateDisplay();
         }
 
         if(buttons_isButtonPressed(BUTTON_1)) {
-            system_sleep(200);
 
             app_switchState(DOWN);
 
             app_updateDisplay();
+            system_sleep(200);
 
         }
 
         if(buttons_isButtonPressed(BUTTON_2)) {
-            system_sleep(200);
 
             app_switchState(UP);
 
             app_updateDisplay();
+            system_sleep(200);
         }
 
     }

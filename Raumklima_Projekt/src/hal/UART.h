@@ -1,14 +1,15 @@
-/*
- * UART.h
- *
- *  Created on: 2 Jan 2019
- *      Author: markus
- */
-
 #ifndef SRC_HAL_UART_H_
 #define SRC_HAL_UART_H_
 
 //#include "hal.h"
+#include <inttypes.h>
+#include <stdbool.h>
+
+#define UARTSYSCLK      (1000000)
+#define UART1_CLKDIV_0     (0x68)
+#define UART1_CLKDIV_1     (0x00)
+#define UART0_CLKDIV_0     (0x68)
+#define UART0_CLKDIV_1     (0x00)
 
 typedef enum{
     UART0,

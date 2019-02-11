@@ -41,7 +41,8 @@ float SHT21_readTemperature(){
 
     SHT21_init();
 
-    g_temp = 0.0f;
+    volatile float g_temp = 0.0f;
+    volatile unsigned char g_shtRxArr[2];
 
 
     // Send temperature read command
@@ -80,7 +81,8 @@ float SHT21_readHumidity(){
 
     SHT21_init();
 
-    g_hum = 0.0f;
+    volatile float g_hum = 0.0f;
+    volatile unsigned char g_shtRxArr[2];
 
 
     // Send humidity read command
@@ -108,14 +110,6 @@ float SHT21_readHumidity(){
     g_hum = (float)(humRaw & 0xFFFC);
     g_hum = -6.0f + 125.0f * (g_hum/65536.0f);
 
-
     return g_hum;
 
-}
-
-// Timer B1 interrupt service routine
-#pragma vector = TIMER0_B0_VECTOR
-__interrupt void Timer0_B0_ISR(void) {
-    TB0CTL &= ~MC_3;
-    __bic_SR_register_on_exit(LPM3_bits);   // Exit LPM3
 }

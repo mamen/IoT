@@ -1,13 +1,8 @@
-/*
- * buttons.h
- *
- *  Created on: 05.11.2018
- *      Author: Markus
- */
-
 #ifndef SRC_DRIVERS_BUTTONS_H_
 #define SRC_DRIVERS_BUTTONS_H_
 
+#include <msp430.h>
+#include "../hal/gpio.h"
 
 #define BUTTON_1 1
 #define BUTTON_2 2

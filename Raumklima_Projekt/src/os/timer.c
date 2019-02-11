@@ -1,6 +1,5 @@
 #include "timer.h"
 
-
 void timer_init(TIMER_t timer, int milliseconds) {
     switch(timer) {
     case Timer_A0:

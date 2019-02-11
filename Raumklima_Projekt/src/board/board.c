@@ -1,10 +1,3 @@
-/*
- * board.c
- *
- *  Created on: 2 Jan 2019
- *      Author: markus
- */
-
 #include "board.h"
 
 void board_init() {

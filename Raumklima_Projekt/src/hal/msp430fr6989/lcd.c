@@ -1,14 +1,4 @@
-#include <msp430.h>
-#include <inttypes.h>
-#include <string.h>
 #include "../lcd.h"
-
-/*
- * lcd.c
- *
- *  Created on: 3 Feb 2019
- *      Author: markus
- */
 
 
 void lcd_init(){
@@ -114,6 +104,9 @@ void lcd_writeChar(int pos, char c){
     uint8_t symbolCode;
 
     switch(c){
+        case ' ':
+            symbolCode = 0x00;
+            break;
         case '0':
             symbolCode = 0xFC;   // 0
             break;
@@ -187,7 +180,10 @@ void lcd_writeChar(int pos, char c){
             symbolCode = 0x6C;   // 9
             break;
         case 'N':
-            symbolCode = 0xF7;   // 9
+            symbolCode = 0x6C;   // 9
+            break;
+        case 'o':
+            symbolCode = 0x3B;   // 9
             break;
         case 'O':
             symbolCode = 0xFC;   // 9
@@ -206,6 +202,9 @@ void lcd_writeChar(int pos, char c){
             break;
         case 'T':
             symbolCode = 0x8C;   // 9
+            break;
+        case 'u':
+            symbolCode = 0x38;   // 9
             break;
         case 'U':
             symbolCode = 0x7C;   // 9
@@ -262,7 +261,6 @@ void lcd_writeString(char* string) {
 
     lcd_clear();
 
-    char * temp;
     volatile int pos = 5;
     volatile int size = strlen(string);
 
