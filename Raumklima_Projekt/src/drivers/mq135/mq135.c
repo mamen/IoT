@@ -4,7 +4,7 @@ volatile static uint8_t readingComplete = 0;
 volatile static float curVal = 0.0;
 
 void mq135_init() {
-    // 8.4 input from MQ135 DigitalOut
+    // PIN 8.4 input from MQ135 DigitalOut
     gpio_setDirection(PORT8, PIN4, INPUT);
 }
 

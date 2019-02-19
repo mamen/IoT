@@ -11,7 +11,6 @@ void led_init() {
 
 }
 
-
 void led_setMode(LED_TYPE_t led, LED_STATE_t mode) {
     switch(mode) {
         // off

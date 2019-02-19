@@ -1,10 +1,3 @@
-/*
- * led.h
- *
- *  Created on: Oct 31, 2018
- *      Author: markus
- */
-
 #ifndef DRIVERS_LED_H_
 #define DRIVERS_LED_H_
 

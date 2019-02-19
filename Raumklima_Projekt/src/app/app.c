@@ -5,9 +5,12 @@ void app_showTemperature() {
 
     temperature = SHT21_readTemperature();
 
-    char buffer[7];
+    // +1 for period
+    char buffer[LCD_NUM_SEGMENTS+1];
 
     floatToString(temperature, buffer, 2);
+
+    removeNullCharacter(buffer, LCD_NUM_SEGMENTS+1);
 
     buffer[5] = '*';
     buffer[6] = 'C';
@@ -18,9 +21,12 @@ void app_showTemperature() {
 void app_showHumidity() {
     float humidity = SHT21_readHumidity();
 
-    char buffer[7];
+    // +1 for period
+    char buffer[LCD_NUM_SEGMENTS+1];
 
     floatToString(humidity, buffer, 1);
+
+    removeNullCharacter(buffer, LCD_NUM_SEGMENTS+1);
 
     buffer[4] = ' ';
     buffer[5] = 'H';
@@ -33,21 +39,15 @@ void app_showHumidity() {
 void app_showAirQuality() {
     float co2ppm = mq135_read();
 
-    char buffer[7];
+    char buffer[LCD_NUM_SEGMENTS];
 
     intToString((int)co2ppm, buffer);
 
-    int i;
+    removeNullCharacter(buffer, LCD_NUM_SEGMENTS);
 
-    for(i = 0; i < 7; i++) {
-        if(buffer[i] == '\x00') {
-                buffer[i] = ' ';
-            }
-    }
-
-    buffer[4] = 'C';
-    buffer[5] = 'O';
-    buffer[6] = '2';
+    buffer[3] = 'C';
+    buffer[4] = 'O';
+    buffer[5] = '2';
 
     lcd_writeString(buffer);
 }
@@ -114,8 +114,6 @@ void app_run() {
     buttons_enableButton(BUTTON_1);
     buttons_enableButton(BUTTON_2);
 
-    uart_init(UART1);
-
     app_updateDisplay();
 
     int airQualityStatus;
@@ -124,6 +122,7 @@ void app_run() {
 
         while(!buttons_isButtonPressed(BUTTON_1) && !buttons_isButtonPressed(BUTTON_2)) {
 
+            // read digital-in on pin 8.4
             airQualityStatus = P8IN & 0x10;
 
             if(airQualityStatus == 0) {

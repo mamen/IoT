@@ -5,6 +5,8 @@
 #include <inttypes.h>
 #include <string.h>
 
+#define LCD_NUM_SEGMENTS 6
+
 void lcd_init();
 void lcd_clear();
 void lcd_setDigit(int digit, uint8_t pos);

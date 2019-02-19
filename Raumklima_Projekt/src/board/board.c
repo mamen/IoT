@@ -8,5 +8,4 @@ void board_init() {
 
     __enable_interrupt();
 
-
 }

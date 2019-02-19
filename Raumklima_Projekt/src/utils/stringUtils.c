@@ -112,3 +112,13 @@ void intToString(int integer, char * integerString)
     integerString[index] = '\0';
 
 }
+
+void removeNullCharacter(char* buffer, int size) {
+    int i;
+
+    for(i = 0; i < size; i++) {
+        if(buffer[i] == '\x00') {
+            buffer[i] = ' ';
+        }
+    }
+}
